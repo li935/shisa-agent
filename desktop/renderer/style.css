@@ -425,10 +425,9 @@ html, body {
   width: 140px;
   height: 140px;
   flex: none;
-  cursor: grab;
+  cursor: pointer;
   transition: opacity 0.6s ease, filter 0.6s ease;
 }
-#char-wrap:active { cursor: grabbing; }
 /* 정지 그림(눈 뜬·감은)과 영상(공부 중·춤)은 같은 상자·같은 기준점에 겹쳐 둔다 */
 #char-body {
   position: absolute;
