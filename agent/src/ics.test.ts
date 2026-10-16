@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { eventsInWindow, occurrenceDates, parseIcs, parseLine, unfold, zonedToUtc } from "./ics.ts";
+import { eventsInWindow, fetchIcsText, occurrenceDates, parseIcs, parseLine, unfold, zonedToUtc } from "./ics.ts";
 import { CalendarSync, icsSource, skipReason, toMeetings } from "./calendar-sync.ts";
 import { Store } from "./store.ts";
 import { loadConfig } from "./config.ts";
@@ -267,4 +267,11 @@ test("캘린더 off: 동기화·알림 없음", async () => {
   assert.equal(r.calls, 0);
   assert.equal(fired, 0);
   stop();
+});
+
+test("fetchIcsText: 접속 실패면 cause 코드만 남기고 주소는 숨긴다", async () => {
+  const orig = globalThis.fetch;
+  globalThis.fetch = async () => { throw new TypeError("fetch failed", { cause: Object.assign(new Error("x"), { code: "ENOTFOUND" }) }); };
+  try { await assert.rejects(fetchIcsText("https://example.com/secret-token.ics"), (e: Error) => e.message === "ICS 접속 실패: ENOTFOUND"); }
+  finally { globalThis.fetch = orig; }
 });
