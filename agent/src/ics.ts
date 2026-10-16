@@ -345,7 +345,9 @@ export function eventsInWindow(text: string, fromMs: number, toMs: number, opts:
 export type FetchText = (url: string) => Promise<string>;
 export const fetchIcsText: FetchText = async (url) => {
   const u = url.replace(/^webcal:\/\//i, "https://");
-  const r = await fetch(u, { signal: AbortSignal.timeout(20e3), headers: { accept: "text/calendar, text/plain, */*" } });
+  let r: Response;
+  try { r = await fetch(u, { signal: AbortSignal.timeout(20e3), headers: { accept: "text/calendar, text/plain, */*" } }); }
+  catch (e: any) { throw new Error(`ICS 접속 실패: ${e?.cause?.code ?? e?.cause?.message ?? e?.name ?? "알 수 없음"}`); } // ENOTFOUND·TimeoutError 등. 주소는 넣지 않는다
   if (!r.ok) throw new Error(`ICS HTTP ${r.status}`); // 주소(비밀)는 오류에 넣지 않는다
   const t = await r.text();
   if (!/BEGIN:VCALENDAR/i.test(t)) throw new Error("ICS 형식이 아님");

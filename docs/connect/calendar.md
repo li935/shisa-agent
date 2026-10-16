@@ -79,6 +79,7 @@ grep -E '\[connectors\] 캘린더|\[calendar\]' ~/.cy-agent/logs/com.cy-agent.da
 # [connectors] 캘린더: api · ICS 1개
 # [calendar] {"meetings":3,"events":4,"calls":1,"errors":0,"costUsd":0}
 # [calendar] ICS 실패: ICS HTTP 404      ← 주소가 틀렸거나 재설정됨 (주소 자체는 로그에 남기지 않음)
+# [calendar] ICS 실패: ICS 접속 실패: ENOTFOUND   ← 네트워크·DNS·인증서(UNABLE_TO_VERIFY_LEAF_SIGNATURE)·시간 초과(TimeoutError) 문제
 ```
 
 주소가 맞는지 직접 보려면 아래처럼 확인할 수 있습니다(터미널 기록에 남으니 끝나면 지워도 좋습니다).
